@@ -5,6 +5,7 @@ import numpy as np
 import uvicorn
 import io
 from PIL import Image
+import os
 
 app = FastAPI()
 
@@ -21,6 +22,10 @@ def preprocess(img: Image.Image):
     img_array = np.expand_dims(img_array, axis=0) / 255.0  # Normalizar y añadir batch
     return img_array
 
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "API funcionando ✅"}
+
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     contents = await file.read()
@@ -31,4 +36,5 @@ async def predict(file: UploadFile = File(...)):
     return {"resultado": result, "confianza": float(prediction[0][0])}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))  # Render asigna el puerto
+    uvicorn.run(app, host="0.0.0.0", port=port)
