@@ -12,7 +12,7 @@ app = FastAPI()
 MODEL_PATH = "modelo/clasificador_gorgojo.h5"
 model = load_model(MODEL_PATH)
 
-IMG_SIZE = (128, 128)   # 🔹 Tu modelo espera 128x128x3
+IMG_SIZE = (128, 128)
 
 def preprocess(img: Image.Image):
     img = img.resize(IMG_SIZE)             
